@@ -47,7 +47,7 @@ mkdir $tst/mirrors    # mirrors directory contains all users's mirror folders
 echo "done"
 
 ### get paths of: i)the input file generator script and ii)the user's executable 
-create_input=$(find .. -name "create_infilesII.sh")
+create_input=$(find .. -name "create_infiles.sh")
 mirror=$(find .. -name "mirror")
 if [ "$mirror" == "" ]
 then 
@@ -74,7 +74,7 @@ echo "sleeping for $time seconds, letting them sync with each other..."
 sleep $time
 
 ### terminate all mirror processes generated, wait until each of them exits safely
-echo "woke up, sending an interrupt signal to all mirror processes in the system"
+echo "woke up, sending an interrupt signal to all mirror processes created"
 for i in ${pids[@]}
 do 
     kill -INT $i 

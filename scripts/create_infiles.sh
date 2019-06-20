@@ -24,9 +24,26 @@ then
     echo error: args 2-4 should all be positive integers
     exit 2
 fi
+#----------------------------------configure program to initialize random files and display generated directories--------------------------#
+
+# if program "fortune" is installed, use it to generate random input files 
+randomGenerator=$(which fortune)
+if [ $? -ne 0 ]
+then
+    # else use ./names.sh, creating random size files in range [64KB-128KB]KB
+    names=$(find . -type f -name "names.sh")
+    randomGenerator="$names 128 $((512 + $RANDOM%512))" # file size is at most 128KB
+fi
+
+# if program "tree" is installed use it to display the content of each directory created, else simply use ls
+list=$(which tree)
+if [ $? -ne 0 ]
+then
+    list="ls -lhR"
+fi
 
 #-------------------------------------------------------create the input directory-------------------------------------------------------#
-# if there is a directory/file under the same path ask for permission to remove its content/it
+# if there is a directory/file under the same path ask for permission to purge it
 if [ -e $1 ]
 then 
     if [ -d $1 ]
@@ -82,7 +99,7 @@ files=0
 #until goal number of files is generated, create a random-content file under each directory including the main directory
 while [ $files -lt $2 ]
 do
-    fortune > $1/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -1 -c 8)
+    $randomGenerator > $1/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -1 -c 8)
     let files=$files+1
 
     #for each file under the main directory
@@ -106,7 +123,7 @@ do
             for ((i=0 ; i < depth; i++))
             do
                 #generate a random name for the file and initialize it with random content
-                fortune > $path/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -1 -c 8)
+                $randomGenerator > $path/$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -1 -c 8)
 
                 #get to the next directory down the chain(each directory has only one subdirectory), if there is none break
                 flag=0
@@ -128,12 +145,7 @@ do
     done 
 done
 echo $3 random input directories were created and initialized with $2 random files at most $4 levels deep, under main folder $1! 
-tree $1
-if [ $? -ne 0 ]
-then 
-    echo "install 'tree' and re-run the script to better visualize the result"
-    ls -R $1
-fi
+$list $1
 
             
 
