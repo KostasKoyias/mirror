@@ -76,7 +76,7 @@ int sync_error(int ret_val, int sig, const char* format, ...){
 } 
 
 // alarm_read, reads from a named pipe but only blocks for a certain amount of time
-int alarm_read(int fd, char* buffer, size_t sz, unsigned int secs){
+int alarm_read(int fd, void* buffer, size_t sz, unsigned int secs){
     int ret_val = -1;
     signal(SIGALRM, alarm_handler);
 

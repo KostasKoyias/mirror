@@ -23,7 +23,7 @@ list.o: ../gen-list/list.c
 cmd.o: cmd.c 
 	$(CC) $(CFLAGS) -c cmd.c $(LFLAGS)
 reset:
-	rm -rf CLUTTER* mirror_dir_* common_dir	
+	rm -rf CLUTTER* mirror_* common_dir	log*
 clean: 
 	rm -rf $(OBJS) mirror common_dir CLUTTER* log* mirror_dir_*
  

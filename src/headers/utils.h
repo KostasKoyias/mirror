@@ -10,7 +10,7 @@ void error_exit(const char*,...);
 int error_return(int, const char*, ...);
 int exclusive_print(int, const char*, ...);
 int sync_error(int, int, const char*, ...);
-int alarm_read(int, char*, size_t, unsigned int);
+int alarm_read(int, void*, size_t, unsigned int);
 
 /* sync info list member methods */
 int assign(void*, const void*);

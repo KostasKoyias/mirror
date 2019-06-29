@@ -117,7 +117,9 @@ int main(int argc, char* argv[]){
             flag = 0;
             rewinddir(args.mirror);
             while((direntp2 = readdir(args.mirror)) != NULL && flag == 0){
-                if((strcmp("..", direntp2->d_name) == 0) || (strcmp(".", direntp2->d_name) == 0))
+
+                // omit all hidden files/folders
+                if(direntp2->d_name == NULL || direntp2->d_name[0] == '.')
                     continue;
                 if(strcmp(direntp->d_name, direntp2->d_name) == 0)
                     flag = 1;

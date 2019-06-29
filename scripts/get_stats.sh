@@ -38,6 +38,7 @@ do
         ((recv_files++))
     else                  #error
         echo "Error: code should be in {s,r,a}, but $code was given"
+        continue
     fi
 
     # update the id list, as well as the maximum and minimum id
