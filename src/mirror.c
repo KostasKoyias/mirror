@@ -241,15 +241,6 @@ void handler(int sig, siginfo_t *siginfo, void *ucontext){
         if(fork() == 0)
             execlp("rm", "rm", "-f", my_common, NULL);
         wait(NULL);
-    
-        // remove your mirror dir
-        if(args.mirror != NULL){
-            closedir(args.mirror); 
-            args.mirror = NULL;
-            /*if(fork() == 0)
-                execlp("rm", "rm", "-rf", argvPtr[args.mirror_i], NULL);
-            wait(NULL);*/
-        }
 
         // state that you left the system in your logfile, but only if you are the parent process
         if(my_id == getpid())
