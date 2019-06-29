@@ -1,5 +1,5 @@
 # run user 41 wait until he syncs with 12 and has completed at least one monitoring cycle
-./mirror -n 41 -c common_dir -i input_2 -m mirror_dir_2 -b 256 -l log_2 &
+../mirror -n 41 -c common_dir -i input_2 -m mirror_dir_2 -b 256 -l log_2 &
 client=$!
 sleep 40
 

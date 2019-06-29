@@ -197,7 +197,7 @@ int recv_folder(const char* dirname, int fd_fifo, const char* named_fifo){
 /*---------------------------------synchronize with another user creating a sending and a receiving process-------------------*/
 int sync_with(int id2){
     struct SyncInfo info;
-    extern struct G_list list;
+    extern list_t list;
     info.id = id2;
     info.tries = 0;
 

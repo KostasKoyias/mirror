@@ -6,7 +6,7 @@ make reset
 # in another window of the terminal first, he detects that there is a new user 41 and mirrors his data
 # then, while monitoring realizes that is synced with 41, so he does nothing
 # now, press ^C in the other window, 41 will leave the system and 12 will delete mirror_dir_1/41
-./mirror -n 12 -c common_dir -i input_1 -m mirror_dir_1 -b 128 -l log_1 &
+../mirror -n 12 -c common_dir -i input_1 -m mirror_dir_1 -b 128 -l log_1 &
 client=$! 
 
 sleep 60  #monitor_cycle = 5, max_wait_on_read = 10

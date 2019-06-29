@@ -55,7 +55,7 @@ int exclusive_print(int fd, const char* format, ...){
 int sync_error(int ret_val, int sig, const char* format, ...){
     extern struct cmd args;
     extern int fd_copy;
-    extern struct G_list list;
+    extern list_t list;
 
     // send a signal indicating the error
     kill(getppid(), sig);

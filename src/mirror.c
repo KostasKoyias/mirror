@@ -8,14 +8,14 @@
 #include "headers/utils.h"
 #include "headers/cmd.h"
 #include "headers/sync.h"
-#include "headers/list.h"
+#include "../gen-list/list.h"
 
 /* variables declared global, so that all signal handlers can use them */
 struct cmd args;
 char **argvPtr = NULL, fifo[MAX_DIR + 2*MAX_ID + 10];
 int fd_copy = -1;
 pid_t my_id;
-struct G_list list = {NULL, sizeof(struct SyncInfo), 0, compare, assign, print, NULL, NULL};
+list_t list = {NULL, sizeof(struct SyncInfo), 0, compare, assign, print, NULL, NULL};
 
 int main(int argc, char* argv[]){
     /* declare variables*/
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
     char id_str[MAX_DIR + MAX_ID + 4], dirpath[MAX_BUFFER], pid_str[MAX_PID];
     struct dirent *direntp, *direntp2;
     struct sigaction action = {NULL};
-    struct G_node *parser;
+    node_t *parser;
     struct SyncInfo *info;
     uint8_t flag = 0;
     my_id = getpid(); 
