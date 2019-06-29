@@ -29,7 +29,8 @@ forks twice. The first child process is supposed to send files and the second to
 named-pipes using low-level i/o. They both accomplish that sending/receiving folders recursively.
 So, before sending a file, a ​ header​ defining whether it is a directory or a file is required. In case of
 an error, which would either be an open or read block on a named-pipe for at least 30 seconds or
-a directory/file creation type error, a SIGUSR signal is sent to the parent process.
+a directory/file creation type error, a SIGUSR
+ signal is sent to the parent process.
 
 ### Signals
 
@@ -63,17 +64,21 @@ First off, the script creates a chain of directories
 iteratively under the input directory. The length of the chain is at most $levels.
 If fewer directories than
 $levels are left to create the last chain contains that many directories.
-For example, creating 7 directories
-using 3 levels under an input folder named “head” looks like this.
+For example, creating 5 directories
+using 2 levels under an input folder named “head” looks like this.
 
+![directory chain](rsrc/dchain.png)
 
-
-
+The number of each folder indicates the order after which they were generated.
 
 After that, directories need to be filled with files. So until we create as many files as
 requested we assign one file to each folder, starting from “head”, traversing the
-folder-tree using DFS. So, creating 10 files in the system pictured above would result in
-a full cycle of 8 assignments, plus 1 more to the “head” and “fold_2”.
+folder-tree using DFS. So, creating 8 files in the system pictured above would result in
+a full cycle of 6 assignments, plus 1 more to the “head” and “fold_0”.
+![full hierarchy](rsrc/fchain.png)
+
+The number of each file indicates the order after which they were generated.
+
 `create_infiles.sh` uses /dev/urandom to generate random directory names and the
 program ​ _fortune ​_ to initialize files with random content. If those are not supported by
 your system use ​ _names.sh_ and _ls_ will be used instead.
