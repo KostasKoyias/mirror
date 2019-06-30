@@ -9,9 +9,9 @@
  void cmd_check(int argc, char** argv, struct cmd *cmd_args){
     int i;
     *cmd_args = (struct cmd){.common = NULL, .input = NULL, .mirror = NULL, .id = -1,\
-    .buffer_sz = -1, .logfile = -1, .common_i = 0, .input_i = 0, .mirror_i = 0};
+    .buffer_sz = -1, .logfile = -1, .common_i = 0, .input_i = 0, .mirror_i = 0, .rm_mirror = 0};
 
-    if(argc != 13)
+    if(argc < 13 || argc > 14)
         usage_error();
 
     // for each flag detected, store the index of the argument passed 
@@ -32,7 +32,11 @@
             usage_error();
     }
 
-    // if any of the 6 arguments was omitted, abort 
+    // check whether a cleanup was requested, it shall be the last argument
+    if(strcmp(argv[argc-1], "-rm") == 0)
+            cmd_args->rm_mirror = 1;
+
+    // if any of the 6 mandatory arguments was omitted, abort 
     if(cmd_args->id == -1 || cmd_args->logfile == -1 || cmd_args->buffer_sz == -1 || cmd_args->common_i == 0 || cmd_args->input_i == 0 || cmd_args->mirror_i == 0)
         usage_error();
 

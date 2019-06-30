@@ -14,6 +14,7 @@ struct cmd{
     uint8_t common_i;
     uint8_t input_i;
     uint8_t mirror_i;
+    uint8_t rm_mirror;
 };
 
 void cmd_check(int, char**, struct cmd*);

@@ -18,6 +18,7 @@ pid_t my_id;
 list_t list = {NULL, sizeof(struct SyncInfo), 0, compare, assign, print, NULL, NULL};
 
 int main(int argc, char* argv[]){
+
     /* declare variables*/
     int  id2, common_fd, status;
     char id_str[MAX_DIR + MAX_ID + 4], dirpath[MAX_BUFFER], pid_str[MAX_PID];
@@ -236,13 +237,21 @@ void handler(int sig, siginfo_t *siginfo, void *ucontext){
     
     //process can only terminate with a SIGINT or SIGQUIT, handler de-allocates memory used and calls exit with code 0
     else if(sig == SIGQUIT || sig == SIGINT){
-        fprintf(stdout, "%d: %d received %s signal, exiting now...\n", args.id, (int)getpid(), strsignal(sig));
+        fprintf(stdout, "%d: %d received %s signal\n", args.id, (int)getpid(), strsignal(sig));
         sprintf(my_common, "%s/%d.id", argvPtr[args.common_i], args.id);
 
         // remove your id from common dir
         if(fork() == 0)
             execlp("rm", "rm", "-f", my_common, NULL);
         wait(NULL);
+
+        // if cleanup was requested, remove your mirror directory
+        if(args.rm_mirror == 1){
+            fprintf(stdout, "%d: cleanup requested, removing %s before exiting\n", args.id, argvPtr[args.mirror_i]);
+            if(fork() == 0)
+                execlp("rm", "rm", "-rf", argvPtr[args.mirror_i], NULL); 
+            wait(NULL);
+        }
 
         // state that you left the system in your logfile, but only if you are the parent process
         if(my_id == getpid())

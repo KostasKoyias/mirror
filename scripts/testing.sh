@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### make sure the right number of arhuments is passed
+### make sure the right number of arguments is passed
 if [ $# -ne 0 ] && [ $# -ne 1 ]
 then
     echo "Usage: $0 (number_of_users)"

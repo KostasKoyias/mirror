@@ -7,7 +7,7 @@
 // print a usage message and exit with code 1(FAILURE)
 void usage_error(){
     fprintf(stdout, "Usage: mirror -n id -c common_dir -i input_dir -m mirror_dir -b buffer_size -l"\
-    " log_file\ninput_dir shall exist, but mirror_dir should not\nAll six arguments are mandatory\n");
+    " log_file [-rm]\ninput_dir shall exist, but mirror_dir should not\nFirst six arguments are mandatory\n");
     exit(EXIT_FAILURE);
 }
 

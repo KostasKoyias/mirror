@@ -56,7 +56,7 @@ int send_folder(const char* folderpath, DIR *dirPtr, int fd_fifo, const char* na
     struct dirent *direntPtr;
     struct stat st;
     int bytes;
-    uint8_t is_dir, path_len;
+    uint8_t is_dir, file_len;
     DIR *nested;
 
     // write all input files or directories recursively into the pipe
@@ -70,16 +70,13 @@ int send_folder(const char* folderpath, DIR *dirPtr, int fd_fifo, const char* na
         stat(path, &st);  // st contains input file's metadata
 
         // write file's or folder's PATH in the fifo, but first write it's LENGTH
-        path_len = (uint8_t)strlen(direntPtr->d_name); // len holds 4 bytes indicating the file's path length
-        write(fd_fifo, &path_len, sizeof(uint8_t)); 
-        write(fd_fifo, direntPtr->d_name, path_len);
+        file_len = (uint8_t)strlen(direntPtr->d_name); // len holds 4 bytes indicating the file's path length
+        write(fd_fifo, &file_len, sizeof(uint8_t)); 
+        write(fd_fifo, direntPtr->d_name, file_len);
 
         //inform the receiver whether you are about to send a folder or a file
         is_dir = S_ISDIR(st.st_mode);
         write(fd_fifo, &is_dir, sizeof(uint8_t));
-
-
-        printf("sending file %s, dir: %d\n", path, S_ISDIR(st.st_mode));
 
         // if it is a directory, do the same thing recursively
         if(is_dir){
@@ -109,8 +106,8 @@ int send_folder(const char* folderpath, DIR *dirPtr, int fd_fifo, const char* na
         write(fd_fifo, buffer, bytes); //write remaining bytes
         exclusive_print(args.logfile, "%d\ts\t%d\t%s\n", args.id, (int)st.st_size, path); //update logfile
     }
-    path_len = 0;
-    write(fd_fifo, &path_len, sizeof(uint8_t));  // indicate that the input is over placing length equal to 0 at the pipe
+    file_len = 0;
+    write(fd_fifo, &file_len, sizeof(uint8_t));  // indicate that the input is over placing length equal to 0 at the pipe
     return 0;
 }
 
@@ -149,7 +146,7 @@ int recv_content(int id2){
 /*---------this function clones a folder recursively, returns 0 in case of success or a negative integer indicating what went wrong----------*/ 
 int recv_folder(const char* dirname, int fd_fifo, const char* named_fifo){
     extern struct cmd args;
-    int bytes_sz, bytes, path_len, sz;
+    int bytes_sz, bytes, file_len, sz;
     extern int fd_copy;
     char filename[MAX_FILE], buffer[args.buffer_sz], path[MAX_BUFFER];
     uint8_t is_dir;
@@ -161,15 +158,19 @@ int recv_folder(const char* dirname, int fd_fifo, const char* named_fifo){
         return error_return(3, "%d: Error making mirror directory '%s'\n", args.id, dirname); 
     }
 
-    //read from pipe until a path with length equal to 0 is encountered 
-    while((alarm_read(fd_fifo, &path_len, sizeof(uint8_t), MAX_WAIT_READ) == sizeof(uint8_t)) && (path_len > 0)){ //get length of file's name
-        alarm_read(fd_fifo, filename, path_len, MAX_WAIT_READ); //read the name
-        printf("len: %d, filename: %s\n", path_len, filename);
-        filename[path_len] = '\0';
+    //read from pipe until a file path with length equal to 0 is encountered 
+    while((alarm_read(fd_fifo, &file_len, sizeof(uint8_t), MAX_WAIT_READ) == sizeof(uint8_t)) && (file_len > 0)){ //get length of file's name
+
+        // omit too large paths
+        if(file_len >= MAX_FILE || strlen(dirname) + MAX_FILE >= MAX_BUFFER)
+            continue;
+        
+        // get name
+        alarm_read(fd_fifo, filename, file_len, MAX_WAIT_READ); 
+        filename[file_len] = '\0';
 
         //create a file or folder to copy the other client's file content
         sprintf(path, "%s/%s", dirname, filename); 
-        printf("filename: %s\n", filename);
 
         //if a folder is being sent make one
         alarm_read(fd_fifo, &is_dir, sizeof(uint8_t), MAX_WAIT_READ);
@@ -196,7 +197,7 @@ int recv_folder(const char* dirname, int fd_fifo, const char* named_fifo){
     }
 
     // if communication ended based on the protocol, return 0, else 7
-    return (path_len == 0 ? 0 : 7); 
+    return (file_len == 0 ? 0 : 7); 
 }
 
 /*---------------------------------synchronize with another user creating a sending and a receiving process-------------------*/
