@@ -1,3 +1,3 @@
-[submodule "gen-list"]
-	path = gen-list
-	url = https://github.com/KostasKoyias/gen-list
+[submodule "list_t"]
+	path = list_t
+	url = https://github.com/KostasKoyias/list_t

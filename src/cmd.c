@@ -3,7 +3,7 @@
   * It also stores the index of each directory passed and opens all directories and files mirror needs.              *
 \*********************************************************************************************************************/
  
- #include "headers/cmd.h"
+ #include "cmd.h"
 
  /*-------make sure all cmd arguments exist and are within the appropriate range, return common directory's index in the argument vector----*/
  void cmd_check(int argc, char** argv, struct cmd *cmd_args){

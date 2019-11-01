@@ -3,7 +3,7 @@
 #include <semaphore.h>
 #include "define.h"
 #include "cmd.h"
-#include "../../gen-list/list.h"
+#include "list.h"
 
 struct cmd;
 

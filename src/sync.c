@@ -3,7 +3,7 @@
  * a mirror folder containing one sub-folder for every other client, a clone of the other client's input, that way all of them are synced *
 \******************************************************************************************************************************************/
 
-#include "headers/sync.h"
+#include "sync.h"
 int who = 0;
 
 /*-------------------------in case of an ALARM signal while receiving files the following code will be executed-------------------------*/

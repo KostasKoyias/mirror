@@ -4,11 +4,11 @@
  * and folders. Finally it monitors the system every now and then, inspecting possible changes, like new registrations or deletions     *
  * of users and makes sure the client's mirror directory is always up to date and in sync with the directories of other users           * 
 \****************************************************************************************************************************************/
-#include "headers/define.h"
-#include "headers/utils.h"
-#include "headers/cmd.h"
-#include "headers/sync.h"
-#include "../gen-list/list.h"
+#include "define.h"
+#include "utils.h"
+#include "cmd.h"
+#include "sync.h"
+#include "list.h"
 
 /* variables declared global, so that all signal handlers can use them */
 struct cmd args;

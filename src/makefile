@@ -1,8 +1,10 @@
 CC = gcc
-CFLAGS = -g3 -Wall
+BASE = $(shell pwd)
+LIST = ../list_t
+CFLAGS = -g3 -Wall -I$(BASE)/include -I$(BASE)/$(LIST)
 OBJS = cmd.o utils.o sync.o list.o
 LFLAGS = -lpthread -lrt
-SOURCES = mirror.c cmd.c utils.c sync.c ../gen-list/list.c
+SOURCES = mirror.c cmd.c utils.c sync.c $(LIST)/list.c
 
 all: mirror $(OBJS)  
 
@@ -12,16 +14,17 @@ mirror: mirror.c $(OBJS)
 
 # data structures and utilities	
 utils.o: utils.c 
-	$(CC) $(CFLAGS) -c utils.c $(LFLAGS)
+	$(CC) $(CFLAGS) -c utils.c
 
 sync.o: sync.c cmd.o
-	$(CC) $(CFLAGS) -c sync.c cmd.c $(LFLAGS)
+	$(CC) $(CFLAGS) -c sync.c cmd.c
 
-list.o: ../gen-list/list.c 
-	$(CC) $(CFLAGS) -c ../gen-list/list.c $(LFLAGS)
+list.o: $(LIST)/list.c 
+	$(CC) $(CFLAGS) -c $(LIST)/list.c
 
 cmd.o: cmd.c 
-	$(CC) $(CFLAGS) -c cmd.c $(LFLAGS)
+	$(CC) $(CFLAGS) -c cmd.c
+
 reset:
 	rm -rf CLUTTER* mirror_* common_dir	log*
 clean: 

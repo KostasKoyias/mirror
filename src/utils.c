@@ -2,7 +2,7 @@
  * The following are some short utility functions, making code re-use simpler                   *
  * most of them handle common error cases and code that is widely used through out this project *
 \***********************************************************************************************/
-#include "headers/utils.h"
+#include "utils.h"
 
 // print a usage message and exit with code 1(FAILURE)
 void usage_error(){
