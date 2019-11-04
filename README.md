@@ -67,7 +67,7 @@ $levels are left to create the last chain contains that many directories.
 For example, creating 5 directories
 using 2 levels under an input folder named “head” looks like this.
 
-![directory chain](rsrc/test/dchain.png)
+![directory chain](rsrc/dchain.png)
 
 The number of each folder indicates the order after which they were generated.
 
@@ -75,7 +75,7 @@ After that, directories need to be filled with files. So until we create as many
 requested we assign one file to each folder, starting from “head”, traversing the
 folder-tree using DFS. So, creating 8 files in the system pictured above would result in
 a full cycle of 6 assignments, plus 1 more to the “head” and “fold_0”.
-![full hierarchy](rsrc/test/fchain.png)
+![full hierarchy](rsrc/fchain.png)
 
 The number of each file indicates the order after which they were generated.
 
