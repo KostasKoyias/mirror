@@ -67,7 +67,7 @@ $levels are left to create the last chain contains that many directories.
 For example, creating 5 directories
 using 2 levels under an input folder named “head” looks like this.
 
-![directory chain](rsrc/test/dchain.png)
+![directory chain](rsrc/dchain.png)
 
 The number of each folder indicates the order after which they were generated.
 
@@ -75,7 +75,7 @@ After that, directories need to be filled with files. So until we create as many
 requested we assign one file to each folder, starting from “head”, traversing the
 folder-tree using DFS. So, creating 8 files in the system pictured above would result in
 a full cycle of 6 assignments, plus 1 more to the “head” and “fold_0”.
-![full hierarchy](rsrc/test/fchain.png)
+![full hierarchy](rsrc/fchain.png)
 
 The number of each file indicates the order after which they were generated.
 
@@ -120,8 +120,8 @@ After iterating on the data it prints in stdout
 First off, make sure to clone this repository and then initialize and update the generic list submodule as follows:
 
     ~ $ git clone https://github.com/KostasKoyias/mirror
-    ~ $ git submodule init mirror/gen-list
-    ~ $ git submodule update mirror/gen-list 
+    ~ $ git submodule init mirror/list_t
+    ~ $ git submodule update mirror/list_t 
 
 To achieve this in a single line try:
 
@@ -136,9 +136,9 @@ In this project, there are three main points we need to test.
 1. What happens when a client requests from another to get synchronized but he does not respond.
    To find out, run
 
-   ```bash
-   mirror/src/test $ ./​fake_user.sh
-   ```
+    ```bash
+    mirror/src/test $ ./​fake_user.sh
+    ```
 
 2. What happens when the other client responds and
 3. What happens when a client leaves the system.
@@ -181,6 +181,8 @@ Then, it sends a SIGINT signal to
 all mirror processes in the system, so that they get to terminate normally.
 Finally, it concatenates all log files
 and uses ​ `get_stats.sh​` to print the simulation’s statistics in a file called ‘stats’ under dbox directory.
+
+>>The source code of the `list_t` submodule can be found under the URI linked in `.gitmodules`.
 
 ## Epilogue
 
